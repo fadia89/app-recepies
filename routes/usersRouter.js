@@ -1,22 +1,23 @@
 import { Router } from "express";
-
+import { getAllUsers, getUserByID, AddUser,updateUser, deleteUser } from "../controllers/usersController.js";
+import verifyUserFields from "../middlewares/verifyUserFields.js";
 import user from "../models/users.js"; 
+
 
 const usersRouter = Router();
 
-usersRouter.get("/users", async (req, res) => {
-  try {
-    // Récupérer tous les utilisateurs de la base de données
-    const users = await user.find();  // utiliser le modèle Mongoose pour les utilisateurs
-    if (users.lenght < 1) {  
-      return res.status(404).json({ message: 'No users found' });  
-    }
-    return res.json(users);  // Renvoi des utilisateurs au format JSON
-  } catch (err) {
-    console.log(err);  
-    return res.status(500).json({ message: 'Internal server error' }); 
-  }
-});
+usersRouter.get('/users', getAllUsers) 
+//usersRouter.get('/users', getAllUsers)
+
+usersRouter.get('/users', getUserByID); 
+
+usersRouter.post('/users', verifyUserFields,AddUser) ;
+
+usersRouter.put('/users/:id', updateUser) ;
+
+usersRouter.delete('/users/:id', deleteUser);
+
+
 
 export default usersRouter;
 
