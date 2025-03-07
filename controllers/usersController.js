@@ -1,5 +1,6 @@
  import users from "../models/users.js";
  import user from "../models/users.js"; 
+ import mongoose from 'mongoose';
 
  export const getAllUsers =  async (req, res) => {
   try {
@@ -41,9 +42,9 @@ export const AddUser = async (req, res) => {
   }
   catch (err){
     console.log(err);
-    return res.status(500).json({message:'Internal server error'})
+    return res.status(500).json({message:'Internal server error'});
   }
-}
+};
 
 export const updateUser = async (req, res) => {
   const {id} =  req.params
@@ -57,22 +58,28 @@ export const updateUser = async (req, res) => {
     console.log(err);
     return res.status(500).json({message:'Internal server error'})
   }
-}
+};
 
 export const deleteUser = async (req, res) => {
   const {id} =  req.params
   console.log(id);
+
+  // Vérification de la validité de l'ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'ID utilisateur invalide' });
+  }
+  
   
     try {
         const userByID= await user.findByIdAndDelete(id);
-       if(!deleteByID)
+       if(!userByID)
             {
-            return response.status(200).json('User has been deleted')
+            return response.status(200).json('User not found');
         }
-        
+        return res.status(200).json({ message: 'User successfully deleted' });  
     }
     catch (err){
     console.log(err);
-    return res.status(500).json({message:'Internal server error'})
+    return res.status(500).json({message:'Internal server error'});
   }
-}
+};
