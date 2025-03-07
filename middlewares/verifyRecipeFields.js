@@ -1,15 +1,13 @@
 
-
-
-const verifyUserFields = async (req, res, next) => {
+const verifyRecipeFields = async (req, res, next) => {
     console.log(req.body);
     try {
-      const { first_name, last_name, email, password } = req.body;
+      const {title,category,country,descriptions,ingredients,steps,author} = req.body;
   
       // Vérification que tous les champs nécessaires sont présents
-      if (!first_name || !last_name || !email || !password) {
+      if (!title || !category || !country || !descriptions || !ingredients ||steps || author ) {
         return res.status(400).json({
-          message: 'Tous les champs (firstName, lastName, email, password) sont nécessaires'
+          message: 'Tous les champs (title,  category, country, description, ingredients, steps, author) sont nécessaires'
         });
       }
   
@@ -21,4 +19,4 @@ const verifyUserFields = async (req, res, next) => {
       return res.status(500).json({ message: 'Internal server error' });
     }
   };
-   export default verifyUserFields
+   export default verifyRecipeFields
